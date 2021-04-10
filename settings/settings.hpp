@@ -34,6 +34,7 @@ public:
   int SDL_Window_Flags, SDL_Window_Width, SDL_Window_Height;
   int SDL_DrawableSize_Width, SDL_DrawableSize_Height;
   int UIFontSize;
+  int SelectedFractalID;
 	bool shouldRecompileShaders, showGLErrors;
   bool showFrameRenderTime;
 

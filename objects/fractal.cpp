@@ -19,13 +19,46 @@ Fractal::~Fractal() {
 bool Fractal::init() {
   this->shaderProgram = glCreateProgram();
 
+  this->currentFractal = Settings::Instance()->SelectedFractalID;
+
   GLuint shaderVertex, shaderFragment;
 
-  std::string shaderPath = Settings::Instance()->appFolder() + "/shaders/mandelbrot.vs";
+  std::string fractalFilename("");
+  switch (this->currentFractal) {
+    case 0:
+      fractalFilename = "out_mandelbrot";
+      break;
+    case 1:
+      fractalFilename = "mandelbrot";
+      break;
+    case 2:
+      fractalFilename = "julia";
+      break;
+    case 3:
+      fractalFilename = "mandelbulb";
+      break;
+    case 4:
+      fractalFilename = "triflake";
+      break;
+    case 5:
+      fractalFilename = "fractal_pyramid";
+      break;
+    case 6:
+      fractalFilename = "dodecahedron";
+      break;
+    case 7:
+      fractalFilename = "jerusalem_cube";
+      break;
+    default:
+      fractalFilename = "out_mandelbrot";
+      break;
+  }
+
+  std::string shaderPath = Settings::Instance()->appFolder() + "/shaders/" + fractalFilename + ".vs";
   std::string shaderSourceVertex = Settings::Instance()->glUtils->readFile(shaderPath.c_str());
   const char* shader_vertex = shaderSourceVertex.c_str();
 
-  shaderPath = Settings::Instance()->appFolder() + "/shaders/mandelbrot.fs";
+  shaderPath = Settings::Instance()->appFolder() + "/shaders/" + fractalFilename + ".fs";
   std::string shaderSourceFragment = Settings::Instance()->glUtils->readFile(shaderPath.c_str());
   const char* shader_fragment = shaderSourceFragment.c_str();
 
@@ -138,6 +171,8 @@ void Fractal::addTexture(std::string const& textureImage, GLuint* vboTexture, co
 }
 
 void Fractal::render(glm::mat4 mtxProject, glm::mat4 mtxCamera, unsigned const int ticks, unsigned const int mouseX, unsigned const int mouseY) {
+  if (this->currentFractal != Settings::Instance()->SelectedFractalID)
+    this->init();
   if (this->glVAO > 0) {
     glUseProgram(this->shaderProgram);
 

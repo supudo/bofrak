@@ -22,8 +22,6 @@ public:
 
     bool isFrame, isLoadingOpen;
 
-    int selectedFractal;
-
 private:
     SDL_Window *sdlWindow;
     std::function<void()> funcQuitApp;

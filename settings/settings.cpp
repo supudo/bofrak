@@ -51,6 +51,7 @@ void Settings::initSettings(const std::string& iniFolder) {
   m_pInstance->SDL_DrawableSize_Height = m_pInstance->cfgUtils->readInt("SDL_DrawableSize_Height");
   m_pInstance->guiClearColor = {70.0f / 255.0f, 70.0f / 255.0f, 70.0f / 255.0f, 255.0f / 255.0f};
   m_pInstance->SDL_Window_Flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
+  m_pInstance->SelectedFractalID = 0;
 
 #ifdef _WIN32
   m_pInstance->newLineDelimiter = "\r\n";

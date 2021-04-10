@@ -23,8 +23,6 @@ void UIManager::init(SDL_Window* window, SDL_GLContext glContext, const std::fun
   this->showAboutBofrak = false;
   this->showDialogFractals = true;
 
-  this->selectedFractal = 0;
-
   int windowWidth, windowHeight;
   SDL_GetWindowSize(this->sdlWindow, &windowWidth, &windowHeight);
   int posX = 50, posY = 50;
@@ -162,6 +160,7 @@ void UIManager::dialogFractals() {
   ImGui::Begin("Fractals", &this->showDialogFractals);
 
   std::vector<const char*> fractals;
+  fractals.push_back("[OUT] Mandelbrot");
   fractals.push_back("Mandelbrot");
   fractals.push_back("Julia");
   fractals.push_back("Mandelbulb");
@@ -169,7 +168,7 @@ void UIManager::dialogFractals() {
   fractals.push_back("Fractal Pyramid");
   fractals.push_back("Dodecahedron fractal");
   fractals.push_back("Jerusalem cube");
-  ImGui::Combo("##1", &this->selectedFractal, &fractals[0], int(fractals.size()));
+  ImGui::Combo("##1", &Settings::Instance()->SelectedFractalID, &fractals[0], int(fractals.size()));
 
   ImGui::End();
 }

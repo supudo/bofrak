@@ -19,6 +19,8 @@ class Fractal {
     GLuint svTicks, svResolution, svCameraPosition, svMouse;
     GLuint svTexture01;
 
+    int currentFractal;
+
     void addTexture(std::string const& textureImage, GLuint* vboTexture, const int textureID);
 };
 
