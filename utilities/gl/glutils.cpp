@@ -2,6 +2,9 @@
 #include "settings/settings.hpp"
 #include <fstream>
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "utilities/stb/stb_image_write.h"
+
 GLUtils::~GLUtils() {}
 
 GLUtils::GLUtils(const std::function<void(std::string)>& logFunction) : funcLog(logFunction) {}
@@ -193,4 +196,27 @@ std::string GLUtils::readFile(const char* filePath) {
   }
   fileStream.close();
   return content;
+}
+
+void GLUtils::dumpTexture(const std::string& filename, GLuint* vboTexture) {
+    std::string endFile(filename);
+    int width = 256;
+    int height = 10;
+    unsigned char* pixels = new unsigned char[3 * width * height];
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glGetTexImage(GL_TEXTURE_2D, *vboTexture, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+
+    unsigned char* line_tmp = new unsigned char[3 * width];
+    unsigned char* line_a = pixels;
+    unsigned char* line_b = pixels + (3 * width * (height - 1));
+    while (line_a < line_b) {
+      memcpy(line_tmp, line_a, width * 3);
+      memcpy(line_a, line_b, width * 3);
+      memcpy(line_b, line_tmp, width * 3);
+      line_a += width * 3;
+      line_b -= width * 3;
+    }
+    stbi_write_png(endFile.c_str(), width, height, 3, pixels, width * 3);
+    delete[] pixels;
+    delete[] line_tmp;
 }

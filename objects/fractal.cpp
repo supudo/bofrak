@@ -5,8 +5,6 @@
 //#define STBI_FAILURE_USERMSG
 #define STB_IMAGE_IMPLEMENTATION
 #include "utilities/stb/stb_image.h"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "utilities/stb/stb_image_write.h"
 
 Fractal::Fractal() {
 }
@@ -23,11 +21,11 @@ bool Fractal::init() {
 
   GLuint shaderVertex, shaderFragment;
 
-  std::string shaderPath = Settings::Instance()->appFolder() + "/shaders/bofrak.vs";
+  std::string shaderPath = Settings::Instance()->appFolder() + "/shaders/mandelbrot.vs";
   std::string shaderSourceVertex = Settings::Instance()->glUtils->readFile(shaderPath.c_str());
   const char* shader_vertex = shaderSourceVertex.c_str();
 
-  shaderPath = Settings::Instance()->appFolder() + "/shaders/bofrak.fs";
+  shaderPath = Settings::Instance()->appFolder() + "/shaders/mandelbrot.fs";
   std::string shaderSourceFragment = Settings::Instance()->glUtils->readFile(shaderPath.c_str());
   const char* shader_fragment = shaderSourceFragment.c_str();
 
@@ -152,36 +150,7 @@ void Fractal::render(glm::mat4 mtxProject, glm::mat4 mtxCamera, unsigned const i
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->svTexture01);
 
-    /*
-    GLubyte* pixels = new GLubyte[256*256*4];
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_RGBA, pixels);
-    FILE *test = fopen("out.raw", "wb");
-    fwrite(pixels, 1, 16, test);
-    fclose(test);
-    */
-
-    /*
-    std::string endFile("out.png");
-    int width = 256;
-    int height = 10;
-    unsigned char* pixels = new unsigned char[3 * width * height];
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glGetTexImage(GL_TEXTURE_2D, this->svTexture01, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-
-    unsigned char* line_tmp = new unsigned char[3 * width];
-    unsigned char* line_a = pixels;
-    unsigned char* line_b = pixels + (3 * width * (height - 1));
-    while (line_a < line_b) {
-      memcpy(line_tmp, line_a, width * 3);
-      memcpy(line_a, line_b, width * 3);
-      memcpy(line_b, line_tmp, width * 3);
-      line_a += width * 3;
-      line_b -= width * 3;
-    }
-    stbi_write_png(endFile.c_str(), width, height, 3, pixels, width * 3);
-    delete[] pixels;
-    delete[] line_tmp;
-    */
+    //Settings::Instance()->glUtils->dumpTexture("out.png", &this->svTexture01);
 
     // draw
     glBindVertexArray(this->glVAO);

@@ -21,6 +21,9 @@ void UIManager::init(SDL_Window* window, SDL_GLContext glContext, const std::fun
   this->isLoadingOpen = false;
   this->showAboutImgui = false;
   this->showAboutBofrak = false;
+  this->showDialogFractals = true;
+
+  this->selectedFractal = 0;
 
   int windowWidth, windowHeight;
   SDL_GetWindowSize(this->sdlWindow, &windowWidth, &windowHeight);
@@ -60,6 +63,11 @@ void UIManager::renderStart(bool isFrame) {
       ImGui::EndMenu();
     }
 
+    if (ImGui::BeginMenu("View")) {
+      ImGui::MenuItem(ICON_FA_BARCODE " Fractals", NULL, &this->showDialogFractals);
+      ImGui::EndMenu();
+    }
+
     if (ImGui::BeginMenu("Help")) {
       ImGui::MenuItem(ICON_FA_INFO_CIRCLE " About ImGui", NULL, &this->showAboutImgui);
       ImGui::MenuItem(ICON_FA_INFO_CIRCLE " About Bofrak", NULL, &this->showAboutBofrak);
@@ -85,6 +93,9 @@ void UIManager::renderStart(bool isFrame) {
 
   if (this->showDemoWindow)
     ImGui::ShowDemoWindow();
+
+  if (this->showDialogFractals)
+    this->dialogFractals();
 }
 
 void UIManager::renderEnd() {
@@ -143,4 +154,22 @@ void UIManager::loadCustomFonts() {
   gm_config.MergeMode = true;
   gm_config.PixelSnapH = true;
   io.Fonts->AddFontFromFileTTF(gmFont.c_str(), Settings::Instance()->UIFontSize + 8.00f, &gm_config, gm_ranges);
+}
+
+void UIManager::dialogFractals() {
+  ImGui::SetNextWindowSize(ImVec2(500, 700), ImGuiCond_FirstUseEver);
+  ImGui::SetNextWindowPos(ImVec2(20, 28), ImGuiCond_FirstUseEver);
+  ImGui::Begin("Fractals", &this->showDialogFractals);
+
+  std::vector<const char*> fractals;
+  fractals.push_back("Mandelbrot");
+  fractals.push_back("Julia");
+  fractals.push_back("Mandelbulb");
+  fractals.push_back("Triflake");
+  fractals.push_back("Fractal Pyramid");
+  fractals.push_back("Dodecahedron fractal");
+  fractals.push_back("Jerusalem cube");
+  ImGui::Combo("##1", &this->selectedFractal, &fractals[0], int(fractals.size()));
+
+  ImGui::End();
 }

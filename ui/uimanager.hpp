@@ -22,18 +22,22 @@ public:
 
     bool isFrame, isLoadingOpen;
 
+    int selectedFractal;
+
 private:
     SDL_Window *sdlWindow;
     std::function<void()> funcQuitApp;
 
     void dialogAboutImGui();
     void dialogAboutBofrak();
+    void dialogFractals();
 
     void loadCustomFonts();
 
     bool showDemoWindow;
     bool showAboutImgui;
     bool showAboutBofrak;
+    bool showDialogFractals;
 };
 
 #endif /* UIManager_hpp */

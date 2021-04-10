@@ -25,6 +25,8 @@ public:
   GLint glGetUniformNoWarning(GLuint program, const char* var_name);
   GLsizei getGLTypeSize(GLenum type);
 
+  void dumpTexture(const std::string& filename, GLuint* vboTexture);
+
 private:
   std::function<void(std::string)> funcLog;
   std::vector<std::string> reportedErrors;
